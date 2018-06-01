@@ -22,5 +22,10 @@ pipeline {
         }
       }
     }
+    stage('Docker Build') {
+      steps {
+        sh 'docker image build -f "docker/Dockerfile" -t todarch/um:latest .'
+      }
+    }
   }
 }
