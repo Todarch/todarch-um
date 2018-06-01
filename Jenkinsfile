@@ -24,7 +24,7 @@ pipeline {
     }
     stage('Docker Build') {
       steps {
-        sh 'docker image build -f "docker/Dockerfile" -t todarch/um:latest .'
+        sh 'docker image build -f "./dockerfiles/Dockerfile" -t todarch/um:latest .'
       }
     }
   }

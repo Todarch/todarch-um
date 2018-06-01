@@ -16,6 +16,6 @@ ADD ${JAR_FILE} um.jar
 
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/um.jar"]
 
-# docker image build -t todarch/um:latest -f docker/Dockerfile .
+# docker image build -t todarch/um:latest -f dockerfiles/Dockerfile .
 # docker container run -it --rm --name todarch-um todarch:um -p 8081:8080 todarch/um
 # localhost:8081/non-secured/up
