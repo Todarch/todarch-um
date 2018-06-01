@@ -22,7 +22,6 @@ pipeline {
         script {
           docker.build("todarch/um:latest", "-f ./dockerfiles/Dockerfile .")
         }
-        // sh 'docker image build -f "./dockerfiles/Dockerfile" -t todarch/um:latest .'
       }
     }
   }
