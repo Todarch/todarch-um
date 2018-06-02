@@ -26,6 +26,7 @@
         <guava.version>24.1-jre</guava.version>
         <checkstyle.version>8.8</checkstyle.version>
         <jjwt.version>0.9.0</jjwt.version>
+        <swagger2.version>2.8.0</swagger2.version>
     </properties>
 
     <dependencies>
@@ -76,6 +77,18 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>${jjwt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger2.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger2.version}</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

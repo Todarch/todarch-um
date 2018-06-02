@@ -30,6 +30,10 @@ docker container run -it --rm --name todarch-um todarch:um -p 8081:8080 todarch/
 
 - master branch is automatically deployed [as Heroku app](https://todarch-um.herokuapp.com/non-secured/up) after each successful Jenkins build.
 
+## Swagger Api Documentation
+
+- [on Heroku deploy](https://todarch-um.herokuapp.com/swagger-ui.html)
+
 **Note:** Currently, the application uses H2 in-memory database, so after each restart/redeployed database will be wiped up. Later, after some maturity, an external database is going to be used.
 
 
