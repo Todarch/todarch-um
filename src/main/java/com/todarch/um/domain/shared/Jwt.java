@@ -17,4 +17,9 @@ public class Jwt implements ValueObject {
   public String token() {
     return token;
   }
+
+  @Override
+  public String toString() {
+    return token();
+  }
 }

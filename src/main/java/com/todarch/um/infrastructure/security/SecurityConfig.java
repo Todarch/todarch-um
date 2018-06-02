@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .authorizeRequests()
         .antMatchers(Endpoints.NON_SECURED + "/**").permitAll()
-        // .anyRequest().authenticated()
+        .anyRequest().authenticated()
         .and()
         .apply(new JwtConfigurer(jwtTokenUtil));
   }

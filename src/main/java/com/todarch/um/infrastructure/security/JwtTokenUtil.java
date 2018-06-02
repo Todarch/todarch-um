@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.extern.slf4j.Slf4j;
@@ -59,8 +60,7 @@ public class JwtTokenUtil {
     String token = Jwts.builder()
         .setSubject(authentication.getName())
         .claim(AUTHORITIES_KEY, authorities)
-        //TODO:selimssevgi:
-        // .signWith(SignatureAlgorithm., secretKey)
+        .signWith(SignatureAlgorithm.HS512, secretKey)
         .setExpiration(validity)
         .compact();
     return Jwt.from(token);
