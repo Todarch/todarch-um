@@ -3,6 +3,7 @@ package com.todarch.um.rest;
 import com.todarch.um.Endpoints;
 import com.todarch.um.domain.User;
 import com.todarch.um.domain.UserRepository;
+import com.todarch.um.helper.BaseIntTest;
 import com.todarch.um.helper.TestUser;
 import com.todarch.um.helper.TestUtil;
 import com.todarch.um.rest.model.RegistrationRequest;
@@ -21,7 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class RegistrationControllerIntTest {
+public class RegistrationControllerIntTest extends BaseIntTest {
 
   @Autowired
   private UserRepository userRepository;

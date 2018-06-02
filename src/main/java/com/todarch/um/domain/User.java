@@ -36,5 +36,13 @@ public class User {
   public Long id() {
     return id == null ? -1 : id;
   }
+
+  public Email email() {
+    return email;
+  }
+
+  public EncryptedPassword password() {
+    return password;
+  }
 }
 
