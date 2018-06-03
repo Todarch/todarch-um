@@ -32,9 +32,9 @@ public class JwtTokenUtil {
 
   private String secretKey = "secret";
 
-  private long tokenValidityInMilliseconds = 1000 * 30L;
+  private long tokenValidityInMilliseconds = 1000 * 3000L;
 
-  private long tokenValidityInMillisecondsForRememberMe = 1000 * 80L;
+  private long tokenValidityInMillisecondsForRememberMe = 1000 * 8000L;
 
   /**
    * Creates jwt based on Authentication object.
