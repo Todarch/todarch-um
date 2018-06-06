@@ -10,6 +10,7 @@ import com.todarch.um.infrastructure.security.JwtTokenUtil;
 import com.todarch.um.rest.auth.model.AuthRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +38,14 @@ public class AuthenticationController {
     AuthCommand authCommand = new AuthCommand(email, password);
     Jwt jwt = authenticationService.authenticate(authCommand);
     response.addHeader(JwtTokenUtil.AUTH_HEADER, JwtTokenUtil.AUTH_PREFIX + jwt.token());
+  }
+
+  /**
+   * Returns 200 if user can read this endpoint.
+   */
+  @GetMapping(Endpoints.AUTHENTICATE)
+  public void isAuthenticated() {
+    // do nothing, enough to reach this point
   }
 }
 

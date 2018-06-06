@@ -2,6 +2,7 @@ package com.todarch.um.rest.auth;
 
 import com.todarch.um.Endpoints;
 import com.todarch.um.domain.User;
+import com.todarch.um.domain.shared.Jwt;
 import com.todarch.um.helper.BaseIntTest;
 import com.todarch.um.helper.TestUser;
 import com.todarch.um.helper.TestUtil;
@@ -17,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -44,4 +46,27 @@ public class AuthenticationControllerTest extends BaseIntTest {
         .andExpect(status().isOk())
         .andExpect(header().exists(JwtTokenUtil.AUTH_HEADER));
   }
+
+  @Test
+  public void userIsAuthenticatedIfHasValidToken() throws Exception {
+    User user = dbHelper.createTestUser();
+    Jwt jwt = dbHelper.createJwt(user);
+
+    mockMvc
+        .perform(
+            get(Endpoints.AUTHENTICATE)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .header(JwtTokenUtil.AUTH_HEADER, JwtTokenUtil.AUTH_PREFIX + jwt.token()))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  public void userIsNotAuthenticatedGivenNoToken() throws Exception {
+    mockMvc
+        .perform(
+            get(Endpoints.AUTHENTICATE)
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+        .andExpect(status().isForbidden());
+  }
+
 }
