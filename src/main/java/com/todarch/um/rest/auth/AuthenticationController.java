@@ -47,5 +47,14 @@ public class AuthenticationController {
   public void isAuthenticated() {
     // do nothing, enough to reach this point
   }
+
+  /**
+   * Revokes current users token.
+   */
+  @PostMapping(Endpoints.LOGOUT)
+  public void logout() {
+    log.info("Logging out user...");
+    //TODO:selimssevgi: should revoke token
+  }
 }
 
