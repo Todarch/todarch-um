@@ -1,5 +1,6 @@
 package com.todarch.um.rest.auth;
 
+import com.todarch.security.api.JwtUtil;
 import com.todarch.um.Endpoints;
 import com.todarch.um.domain.User;
 import com.todarch.um.domain.shared.Jwt;
@@ -7,7 +8,6 @@ import com.todarch.um.helper.BaseIntTest;
 import com.todarch.um.helper.TestUser;
 import com.todarch.um.helper.TestUtil;
 import com.todarch.um.infrastructure.config.DbPopulator;
-import com.todarch.um.infrastructure.security.JwtTokenUtil;
 import com.todarch.um.rest.auth.model.AuthRequest;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -45,7 +45,7 @@ public class AuthenticationControllerTest extends BaseIntTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(TestUtil.toJsonBytes(req)))
         .andExpect(status().isNoContent())
-        .andExpect(header().exists(JwtTokenUtil.AUTH_HEADER));
+        .andExpect(header().exists(JwtUtil.AUTH_HEADER));
   }
 
   @Test
@@ -57,7 +57,7 @@ public class AuthenticationControllerTest extends BaseIntTest {
         .perform(
             get(Endpoints.AUTHENTICATE)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .header(JwtTokenUtil.AUTH_HEADER, JwtTokenUtil.AUTH_PREFIX + jwt.token()))
+                .header(JwtUtil.AUTH_HEADER, JwtUtil.AUTH_PREFIX + jwt.token()))
         .andExpect(status().isNoContent());
   }
 
@@ -78,7 +78,7 @@ public class AuthenticationControllerTest extends BaseIntTest {
         .perform(
             post(Endpoints.LOGOUT)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .header(JwtTokenUtil.AUTH_HEADER, JwtTokenUtil.AUTH_PREFIX + jwt.token()))
+                .header(JwtUtil.AUTH_HEADER, JwtUtil.AUTH_PREFIX + jwt.token()))
         .andExpect(status().isNoContent());
   }
 
@@ -95,6 +95,6 @@ public class AuthenticationControllerTest extends BaseIntTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(TestUtil.toJsonBytes(req)))
         .andExpect(status().isNoContent())
-        .andExpect(header().exists(JwtTokenUtil.AUTH_HEADER));
+        .andExpect(header().exists(JwtUtil.AUTH_HEADER));
   }
 }

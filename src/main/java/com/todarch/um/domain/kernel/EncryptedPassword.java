@@ -3,8 +3,6 @@ package com.todarch.um.domain.kernel;
 import com.todarch.um.domain.ValueObject;
 import lombok.EqualsAndHashCode;
 
-import java.util.Objects;
-
 import static com.google.common.base.Preconditions.checkArgument;
 
 @EqualsAndHashCode

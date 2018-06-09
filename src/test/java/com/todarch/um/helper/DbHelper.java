@@ -1,10 +1,10 @@
 package com.todarch.um.helper;
 
+import com.todarch.security.api.JwtUtil;
 import com.todarch.um.domain.User;
 import com.todarch.um.domain.UserRepository;
 import com.todarch.um.domain.kernel.EncryptedPassword;
 import com.todarch.um.domain.shared.Jwt;
-import com.todarch.um.infrastructure.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,7 +24,7 @@ public class DbHelper {
   private PasswordEncoder passwordEncoder;
 
   @Autowired
-  private JwtTokenUtil jwtTokenUtil;
+  private JwtUtil jwtUtil;
 
   /**
    * Creates default test user using TestUser data.
@@ -54,7 +54,8 @@ public class DbHelper {
 
     UsernamePasswordAuthenticationToken authentication =
         new UsernamePasswordAuthenticationToken(principal, "", authorities);
-    return jwtTokenUtil.createToken(authentication, false);
+    String token = jwtUtil.createToken(authentication, false, user.id());
+    return Jwt.from(token);
   }
 
   private Supplier<AssertionError> onNotFound() {
