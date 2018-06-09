@@ -1,8 +1,10 @@
 package com.todarch.um.application.auth;
 
+import com.todarch.security.api.JwtUtil;
 import com.todarch.um.application.auth.model.AuthCommand;
+import com.todarch.um.domain.User;
+import com.todarch.um.domain.UserRepository;
 import com.todarch.um.domain.shared.Jwt;
-import com.todarch.um.infrastructure.security.JwtTokenUtil;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +19,8 @@ import org.springframework.stereotype.Service;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
   private final AuthenticationManager authenticationManager;
-  private final JwtTokenUtil jwtTokenUtil;
+  private final UserRepository userRepository;
+  private final JwtUtil jwtUtil;
 
   @Override
   public Jwt authenticate(@NonNull AuthCommand authCommand) {
@@ -27,8 +30,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             authCommand.getRawPassword().value());
 
     Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
-    Jwt token = jwtTokenUtil.createToken(authentication, false);
+    // before throwing NPE, there will be other errors, ignore for now
+    User user = userRepository.findByEmail(authCommand.getEmail()).get();
+    String token = jwtUtil.createToken(authentication, false, user.id());
     log.info("Created token for {}", authCommand.getEmail());
-    return token;
+    return Jwt.from(token);
   }
 }

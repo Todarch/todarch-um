@@ -1,12 +1,12 @@
 package com.todarch.um.rest.auth;
 
+import com.todarch.security.api.JwtUtil;
 import com.todarch.um.Endpoints;
 import com.todarch.um.application.auth.AuthenticationService;
 import com.todarch.um.application.auth.model.AuthCommand;
 import com.todarch.um.domain.shared.Email;
 import com.todarch.um.domain.shared.Jwt;
 import com.todarch.um.domain.shared.RawPassword;
-import com.todarch.um.infrastructure.security.JwtTokenUtil;
 import com.todarch.um.rest.auth.model.AuthRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +37,7 @@ public class AuthenticationController {
     Jwt jwt = authenticationService.authenticate(authCommand);
 
     HttpHeaders headers = new HttpHeaders();
-    headers.add(JwtTokenUtil.AUTH_HEADER, JwtTokenUtil.AUTH_PREFIX + jwt.token());
+    headers.add(JwtUtil.AUTH_HEADER, JwtUtil.AUTH_PREFIX + jwt.token());
     return ResponseEntity.noContent().headers(headers).build();
   }
 

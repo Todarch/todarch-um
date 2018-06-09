@@ -1,5 +1,6 @@
 package com.todarch.um.infrastructure.security;
 
+import com.todarch.security.api.JwtConfigurerProvider;
 import com.todarch.um.Endpoints;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -25,7 +26,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   private final AuthenticationManagerBuilder authenticationManagerBuilder;
   private final PasswordEncoder passwordEncoder;
   private final UserDetailsService userDetailsService;
-  private final JwtTokenUtil jwtTokenUtil;
 
 
   /**
@@ -67,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(Endpoints.NON_SECURED + "/**").permitAll()
         .anyRequest().authenticated()
         .and()
-        .apply(new JwtConfigurer(jwtTokenUtil));
+        .apply(JwtConfigurerProvider.get());
   }
 
   @Bean
