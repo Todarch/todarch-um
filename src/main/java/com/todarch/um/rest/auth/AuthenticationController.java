@@ -10,12 +10,12 @@ import com.todarch.um.infrastructure.security.JwtTokenUtil;
 import com.todarch.um.rest.auth.model.AuthRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @AllArgsConstructor
@@ -26,35 +26,37 @@ public class AuthenticationController {
 
   /**
    * Authenticates users.
-   *
-   * @param request authentication request
-   * @param response response object
+   *  @param request authentication request
    */
   @PostMapping(Endpoints.AUTHENTICATION)
-  public void authenticate(@RequestBody AuthRequest request, HttpServletResponse response) {
+  public ResponseEntity<Object> authenticate(@RequestBody AuthRequest request) {
     Email email = Email.from(request.getEmail());
     RawPassword password = RawPassword.from(request.getPassword());
 
     AuthCommand authCommand = new AuthCommand(email, password);
     Jwt jwt = authenticationService.authenticate(authCommand);
-    response.addHeader(JwtTokenUtil.AUTH_HEADER, JwtTokenUtil.AUTH_PREFIX + jwt.token());
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.add(JwtTokenUtil.AUTH_HEADER, JwtTokenUtil.AUTH_PREFIX + jwt.token());
+    return ResponseEntity.noContent().headers(headers).build();
   }
 
   /**
-   * Returns 200 if user can read this endpoint.
+   * Returns 204 if user can read this endpoint.
    */
   @GetMapping(Endpoints.AUTHENTICATE)
-  public void isAuthenticated() {
-    // do nothing, enough to reach this point
+  public ResponseEntity<Object> isAuthenticated() {
+    return ResponseEntity.noContent().build();
   }
 
   /**
    * Revokes current users token.
    */
   @PostMapping(Endpoints.LOGOUT)
-  public void logout() {
+  public ResponseEntity<Object> logout() {
     log.info("Logging out user...");
     //TODO:selimssevgi: should revoke token
+    return ResponseEntity.noContent().build();
   }
 }
 
