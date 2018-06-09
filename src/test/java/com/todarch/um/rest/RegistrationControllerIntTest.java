@@ -40,7 +40,7 @@ public class RegistrationControllerIntTest extends BaseIntTest {
         .perform(MockMvcRequestBuilders.post(Endpoints.REGISTRATION)
         .contentType(MediaType.APPLICATION_JSON_UTF8)
         .content(TestUtil.toJsonBytes(req)))
-        .andExpect(MockMvcResultMatchers.status().isOk());
+        .andExpect(MockMvcResultMatchers.status().isCreated());
 
     User registeredUser = userRepository.findByEmail(TestUser.EMAIL).orElse(null);
     Assertions.assertThat(registeredUser).isNotNull();

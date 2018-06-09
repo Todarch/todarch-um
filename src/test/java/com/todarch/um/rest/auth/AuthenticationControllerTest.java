@@ -6,9 +6,10 @@ import com.todarch.um.domain.shared.Jwt;
 import com.todarch.um.helper.BaseIntTest;
 import com.todarch.um.helper.TestUser;
 import com.todarch.um.helper.TestUtil;
-import com.todarch.um.infrastructure.security.JwtConfigurer;
+import com.todarch.um.infrastructure.config.DbPopulator;
 import com.todarch.um.infrastructure.security.JwtTokenUtil;
 import com.todarch.um.rest.auth.model.AuthRequest;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class AuthenticationControllerTest extends BaseIntTest {
             post(Endpoints.AUTHENTICATION)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(TestUtil.toJsonBytes(req)))
-        .andExpect(status().isOk())
+        .andExpect(status().isNoContent())
         .andExpect(header().exists(JwtTokenUtil.AUTH_HEADER));
   }
 
@@ -57,7 +58,7 @@ public class AuthenticationControllerTest extends BaseIntTest {
             get(Endpoints.AUTHENTICATE)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .header(JwtTokenUtil.AUTH_HEADER, JwtTokenUtil.AUTH_PREFIX + jwt.token()))
-        .andExpect(status().isOk());
+        .andExpect(status().isNoContent());
   }
 
   @Test
@@ -69,4 +70,31 @@ public class AuthenticationControllerTest extends BaseIntTest {
         .andExpect(status().isForbidden());
   }
 
+  @Test
+  public void logoutReturns204() throws Exception {
+    User user = dbHelper.createTestUser();
+    Jwt jwt = dbHelper.createJwt(user);
+    mockMvc
+        .perform(
+            post(Endpoints.LOGOUT)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .header(JwtTokenUtil.AUTH_HEADER, JwtTokenUtil.AUTH_PREFIX + jwt.token()))
+        .andExpect(status().isNoContent());
+  }
+
+  @Ignore("After each test case db is wiped out, test user is also removed.")
+  @Test
+  public void testUserShouldBeAuthenticated() throws Exception {
+    AuthRequest req = new AuthRequest();
+    req.setEmail(DbPopulator.TEST_EMAIL.value());
+    req.setPassword(DbPopulator.TEST_PASSWORD.value());
+
+    mockMvc
+        .perform(
+            post(Endpoints.AUTHENTICATION)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(TestUtil.toJsonBytes(req)))
+        .andExpect(status().isNoContent())
+        .andExpect(header().exists(JwtTokenUtil.AUTH_HEADER));
+  }
 }
