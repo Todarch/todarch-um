@@ -17,12 +17,5 @@ pipeline {
         }
       }
     }
-    stage('Docker Build') {
-      steps {
-        script {
-          docker.build("todarch/um:latest", "-f ./dockerfiles/Dockerfile .")
-        }
-      }
-    }
   }
 }
