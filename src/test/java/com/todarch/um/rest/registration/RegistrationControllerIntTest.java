@@ -1,4 +1,4 @@
-package com.todarch.um.rest;
+package com.todarch.um.rest.registration;
 
 import com.todarch.um.Endpoints;
 import com.todarch.um.domain.User;
@@ -6,7 +6,7 @@ import com.todarch.um.domain.UserRepository;
 import com.todarch.um.helper.BaseIntTest;
 import com.todarch.um.helper.TestUser;
 import com.todarch.um.helper.TestUtil;
-import com.todarch.um.rest.model.RegistrationRequest;
+import com.todarch.um.rest.registration.model.RegistrationRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -40,7 +42,8 @@ public class RegistrationControllerIntTest extends BaseIntTest {
         .perform(MockMvcRequestBuilders.post(Endpoints.REGISTRATION)
         .contentType(MediaType.APPLICATION_JSON_UTF8)
         .content(TestUtil.toJsonBytes(req)))
-        .andExpect(MockMvcResultMatchers.status().isCreated());
+        .andExpect(MockMvcResultMatchers.status().isCreated())
+        .andExpect(jsonPath("$.email").value(TestUser.EMAIL.value()));
 
     User registeredUser = userRepository.findByEmail(TestUser.EMAIL).orElse(null);
     Assertions.assertThat(registeredUser).isNotNull();

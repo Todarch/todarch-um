@@ -25,6 +25,7 @@ public class Email {
    * @throws IllegalArgumentException when value is null, or does satisfy the regex.
    */
   public static Email from(String email) {
+    //TODO:selimssevgi: lowercase the email address
     checkArgument(email != null, "Email cannot be null");
     checkArgument(email.matches(EMAIL_REGEX), "Invalid value format");
 
