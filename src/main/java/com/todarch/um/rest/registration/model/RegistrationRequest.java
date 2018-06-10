@@ -1,4 +1,4 @@
-package com.todarch.um.rest.model;
+package com.todarch.um.rest.registration.model;
 
 import lombok.Data;
 
