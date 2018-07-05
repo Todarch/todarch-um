@@ -27,6 +27,7 @@
         <checkstyle.version>8.8</checkstyle.version>
         <swagger2.version>2.8.0</swagger2.version>
         <todarch.security.version>0.0.1-SNAPSHOT</todarch.security.version>
+        <sonar.scanner.plugin.version>3.4.0.905</sonar.scanner.plugin.version>
     </properties>
 
     <dependencies>
@@ -119,6 +120,12 @@
 					</execution>
 				</executions>
 			</plugin>
+
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>${sonar.scanner.plugin.version}</version>
+            </plugin>
         </plugins>
     </build>
 
