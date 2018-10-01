@@ -7,9 +7,7 @@ import com.todarch.um.domain.shared.Jwt;
 import com.todarch.um.helper.BaseIntTest;
 import com.todarch.um.helper.TestUser;
 import com.todarch.um.helper.TestUtil;
-import com.todarch.um.infrastructure.config.DbPopulator;
 import com.todarch.um.rest.auth.model.AuthRequest;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,21 +78,5 @@ public class AuthenticationControllerTest extends BaseIntTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .header(JwtUtil.AUTH_HEADER, JwtUtil.AUTH_PREFIX + jwt.token()))
         .andExpect(status().isNoContent());
-  }
-
-  @Ignore("After each test case db is wiped out, test user is also removed.")
-  @Test
-  public void testUserShouldBeAuthenticated() throws Exception {
-    AuthRequest req = new AuthRequest();
-    req.setEmail(DbPopulator.TEST_EMAIL.value());
-    req.setPassword(DbPopulator.TEST_PASSWORD.value());
-
-    mockMvc
-        .perform(
-            post(Endpoints.AUTHENTICATION)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(TestUtil.toJsonBytes(req)))
-        .andExpect(status().isNoContent())
-        .andExpect(header().exists(JwtUtil.AUTH_HEADER));
   }
 }
