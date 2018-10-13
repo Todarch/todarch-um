@@ -1,6 +1,4 @@
-FROM openjdk:8-jdk-alpine
-
-LABEL maintainer="selimssevgi@gmail.com"
+FROM openjdk:11-jre-slim
 
 # Add a volume pointing to /tmp, spring writes to it
 VOLUME /tmp
@@ -14,8 +12,8 @@ ARG JAR_FILE=target/um-0.0.1-SNAPSHOT.jar
 # Add the application's jar to the container
 ADD ${JAR_FILE} um.jar
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/um.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dserver.port=8080","-jar","/um.jar"]
 
-# docker image build -t todarch/um:latest -f dockerfiles/Dockerfile .
+# docker image build -t todarch/um:latest -f dockerfiles/dockerfile-local .
 # docker container run -it --rm --name todarch-um todarch:um -p 8081:8080 todarch/um
 # localhost:8081/non-secured/up
