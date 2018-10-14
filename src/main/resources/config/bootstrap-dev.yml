@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: um
+  cloud:
+    config:
+      uri: http://localhost:7001
+      fail-fast: true
+  kafka:
+    bootstrap-servers: velomobile-01.srvs.cloudkafka.com:9094, velomobile-02.srvs.cloudkafka.com:9094, velomobile-03.srvs.cloudkafka.com:9094
+    properties:
+      security.protocol: SASL_SSL
+      sasl:
+        mechanism: SCRAM-SHA-256
+        jaas.config: org.apache.kafka.common.security.scram.ScramLoginModule required username="${CLOUDKARAFKA_USERNAME}" password="${CLOUDKARAFKA_PASSWORD}";
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      client-id: producer-um
+    consumer:
+      properties:
+        spring.json.trusted.packages: com.todarch
+
+server:
+  port: 6363

@@ -3,12 +3,14 @@ package com.todarch.um.application.user;
 import com.todarch.security.api.SecurityUtil;
 import com.todarch.security.api.UserContext;
 import com.todarch.um.application.user.model.RegistrationCommand;
+import com.todarch.um.application.user.model.NewUserRegistered;
 import com.todarch.um.application.user.model.UserDto;
 import com.todarch.um.domain.User;
 import com.todarch.um.domain.UserRepository;
 import com.todarch.um.domain.kernel.EncryptedPassword;
 import com.todarch.um.domain.shared.Email;
 import com.todarch.um.domain.shared.RawPassword;
+import com.todarch.um.infrastructure.event.EventPublisher;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,8 @@ public class UserServiceImpl implements UserService {
 
   private final PasswordEncoder passwordEncoder;
 
+  private final EventPublisher eventPublisher;
+
   @Override
   public void register(@NonNull RegistrationCommand command) {
     RawPassword userRawPassword = command.getRawPassword();
@@ -33,6 +37,10 @@ public class UserServiceImpl implements UserService {
     User user = new User(command.getEmail(), encryptedPassword);
     userRepository.save(user);
     log.info("Created user with {}", command.getEmail());
+
+    NewUserRegistered newUserRegistered =
+        new NewUserRegistered(command.getEmail(), "RandomActivationEmail");
+    eventPublisher.publish(newUserRegistered);
   }
 
   @Override

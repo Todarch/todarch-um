@@ -1,8 +1,8 @@
 spring:
   application:
     name: um
-#  profiles:
-#    active: development
+  profiles:
+    active: dev
   cloud:
     config:
       uri: https://todarch-cs.herokuapp.com
@@ -10,3 +10,4 @@ spring:
 
 server:
   port: 6363
+
