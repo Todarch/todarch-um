@@ -9,7 +9,7 @@ public final class TestUser {
     throw new AssertionError("Cannot create a object from utility class");
   }
 
-  public static final Email EMAIL = Email.from("selim@sevgi.com");
+  public static final Email EMAIL = Email.from("test@user.com");
   public static final RawPassword RAW_PASSWORD = RawPassword.from("12345678");
 
 }
