@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -42,8 +43,9 @@ public class AuthenticationControllerTest extends BaseIntTest {
             post(Endpoints.AUTHENTICATION)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(TestUtil.toJsonBytes(req)))
-        .andExpect(status().isNoContent())
-        .andExpect(header().exists(JwtUtil.AUTH_HEADER));
+        .andExpect(status().isOk())
+        .andExpect(header().exists(JwtUtil.AUTH_HEADER))
+        .andExpect(jsonPath("$.token").exists());
   }
 
   @Test
