@@ -24,6 +24,7 @@
     <swagger2.version>2.8.0</swagger2.version>
     <todarch.security.version>0.0.1-SNAPSHOT</todarch.security.version>
     <postgresql.version>42.2.4</postgresql.version>
+    <todarch.common.version>1.0-SNAPSHOT</todarch.common.version>
 
     <!--<scc.http.baseClass>should.be.overridden.by.project</scc.http.baseClass>-->
     <scc.messaging.baseClass>com.todarch.um.BaseContractTestMessaging</scc.messaging.baseClass>
@@ -36,6 +37,12 @@
       <groupId>com.todarch</groupId>
       <artifactId>security</artifactId>
       <version>${todarch.security.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.todarch</groupId>
+      <artifactId>todarch-common</artifactId>
+      <version>${todarch.common.version}</version>
     </dependency>
 
     <dependency>
