@@ -8,9 +8,11 @@ import com.todarch.um.domain.shared.Email;
 import com.todarch.um.domain.shared.Jwt;
 import com.todarch.um.domain.shared.RawPassword;
 import com.todarch.um.rest.auth.model.AuthRequest;
+import com.todarch.um.rest.auth.model.AuthResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +31,7 @@ public class AuthenticationController {
    *  @param request authentication request
    */
   @PostMapping(Endpoints.AUTHENTICATION)
-  public ResponseEntity<Object> authenticate(@RequestBody AuthRequest request) {
+  public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request) {
     Email email = Email.from(request.getEmail());
     RawPassword password = RawPassword.from(request.getPassword());
 
@@ -38,7 +40,9 @@ public class AuthenticationController {
 
     HttpHeaders headers = new HttpHeaders();
     headers.add(JwtUtil.AUTH_HEADER, JwtUtil.AUTH_PREFIX + jwt.token());
-    return ResponseEntity.noContent().headers(headers).build();
+    var authResponse = new AuthResponse();
+    authResponse.setToken(jwt.token());
+    return new ResponseEntity<>(authResponse, headers, HttpStatus.OK);
   }
 
   /**
