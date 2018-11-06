@@ -2,138 +2,162 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
+  <groupId>com.todarch</groupId>
+  <artifactId>um</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>um</name>
+  <description>Todarch User Management Service</description>
+
+  <parent>
     <groupId>com.todarch</groupId>
-    <artifactId>um</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <artifactId>parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath/>
+  </parent>
 
-    <name>um</name>
-    <description>Todarch User Management Service</description>
+  <properties>
+    <guava.version>24.1-jre</guava.version>
+    <swagger2.version>2.8.0</swagger2.version>
+    <todarch.security.version>0.0.1-SNAPSHOT</todarch.security.version>
+    <postgresql.version>42.2.4</postgresql.version>
 
-    <parent>
-        <groupId>com.todarch</groupId>
-        <artifactId>parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <relativePath/>
-    </parent>
+    <!--<scc.http.baseClass>should.be.overridden.by.project</scc.http.baseClass>-->
+    <scc.messaging.baseClass>com.todarch.um.BaseContractTestMessaging</scc.messaging.baseClass>
+    <!-- override to LOCAL on development -->
+    <scc.contracts.mode>REMOTE</scc.contracts.mode>
+  </properties>
 
-    <properties>
-        <guava.version>24.1-jre</guava.version>
-        <swagger2.version>2.8.0</swagger2.version>
-        <todarch.security.version>0.0.1-SNAPSHOT</todarch.security.version>
-        <postgresql.version>42.2.4</postgresql.version>
-    </properties>
+  <dependencies>
+    <dependency>
+      <groupId>com.todarch</groupId>
+      <artifactId>security</artifactId>
+      <version>${todarch.security.version}</version>
+    </dependency>
 
-    <dependencies>
-        <!-- keep github-based mvn repository artifacts at the top!
-        mvn goes in order and request each and transitive deps from listed repositories
-        (github, spring, central) until one of them satisfies the request or fail.
-        if these dependencies are the the bottom of the list,
-        github-based repo gives handshake errors after many failed requests for other deps -->
-        <dependency>
-            <groupId>com.todarch</groupId>
-            <artifactId>security</artifactId>
-            <version>${todarch.security.version}</version>
-        </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-config-client</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-config-client</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <scope>runtime</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-        </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
-        </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${guava.version}</version>
+    </dependency>
 
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
-        </dependency>
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger2</artifactId>
+      <version>${swagger2.version}</version>
+      <scope>compile</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${swagger2.version}</version>
-            <scope>compile</scope>
-        </dependency>
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger-ui</artifactId>
+      <version>${swagger2.version}</version>
+      <scope>compile</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>${swagger2.version}</version>
-            <scope>compile</scope>
-        </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>${postgresql.version}</version>
+    </dependency>
 
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${postgresql.version}</version>
-        </dependency>
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-        </dependency>
-    </dependencies>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+    </dependency>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-			</plugin>
-        </plugins>
-    </build>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-stream-test-support</artifactId>
+      <scope>test</scope>
+    </dependency>
 
-    <repositories>
-        <repository>
-            <!-- alphabetical ordering of the <id> tag, want to have this one at the last -->
-            <id>z-mvn-repo</id>
-            <url>https://rawgit.com/todarch/todarch-mvn-repo/master</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-contract-verifier</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-contract-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>jib-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
+  <repositories>
+    <repository>
+      <id>z-mvn-repo</id>
+      <url>https://raw.githubusercontent.com/todarch/todarch-mvn-repo/master</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
 </project>
