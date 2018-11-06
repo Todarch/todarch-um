@@ -1,1 +1,6 @@
-spring.cloud.config.enabled: false
+spring.cloud:
+  config.enabled: false
+  stream:
+    bindings:
+      emailbinding:
+        destination: emails
