@@ -7,7 +7,6 @@ public final class Endpoints {
 
   public static final String NON_SECURED = "/non-secured";
   public static final String REGISTRATION = NON_SECURED + "/register";
-  public static final String UP = NON_SECURED + "/up";
   public static final String AUTHENTICATION = NON_SECURED + "/authenticate";
 
   private static final String API = "/api";
