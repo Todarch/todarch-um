@@ -7,6 +7,8 @@ import com.todarch.um.application.auth.IncorrectCredentials;
 import com.todarch.um.application.user.EmailAddressAlreadyInUse;
 import com.todarch.um.application.user.InvalidActivationCode;
 import com.todarch.um.application.user.UserCommandService;
+import com.todarch.um.application.user.UserQueryService;
+import com.todarch.um.application.user.model.UserDto;
 import com.todarch.um.domain.shared.Jwt;
 import com.todarch.um.helper.DbHelper;
 import com.todarch.um.helper.TestUser;
@@ -22,6 +24,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.argThat;
 
 /**
@@ -45,6 +48,9 @@ public abstract class BaseContractTestHttp {
   @MockBean
   private AuthenticationService authenticationService;
 
+  @MockBean
+  private UserQueryService userQueryService;
+
   /**
    * Set up mocks and configuration for generated tests.
    */
@@ -52,9 +58,20 @@ public abstract class BaseContractTestHttp {
   public void setup() {
     setupUserCommandService();
 
+    setupUserQueryService();
+
     setupAuthService();
 
     RestAssuredMockMvc.mockMvc(mockMvc);
+  }
+
+  private void setupUserQueryService() {
+    var userDto = new UserDto();
+    userDto.setEmail(TestUser.EMAIL.value());
+
+    Mockito.doReturn(userDto)
+        .when(userQueryService).userDetailsById(anyLong());
+
   }
 
   private void setupUserCommandService() {
