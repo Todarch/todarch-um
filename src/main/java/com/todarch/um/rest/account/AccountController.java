@@ -1,7 +1,7 @@
 package com.todarch.um.rest.account;
 
 import com.todarch.um.Endpoints;
-import com.todarch.um.application.user.UserService;
+import com.todarch.um.application.user.UserQueryService;
 import com.todarch.um.application.user.model.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class AccountController {
 
-  private final UserService userService;
+  private final UserQueryService userQueryService;
 
   /**
    * Returns current user account information.
@@ -23,7 +23,7 @@ public class AccountController {
    */
   @GetMapping(Endpoints.ACCOUNT)
   public ResponseEntity<UserDto> currentUserAccount() {
-    UserDto account = userService.getAccount();
+    UserDto account = userQueryService.getAccount();
 
     return ResponseEntity.ok(account);
   }
