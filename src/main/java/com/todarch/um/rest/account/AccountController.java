@@ -1,5 +1,7 @@
 package com.todarch.um.rest.account;
 
+import com.todarch.security.api.SecurityUtil;
+import com.todarch.security.api.UserContext;
 import com.todarch.um.Endpoints;
 import com.todarch.um.application.user.UserQueryService;
 import com.todarch.um.application.user.model.UserDto;
@@ -22,8 +24,11 @@ public class AccountController {
    * @return user dto
    */
   @GetMapping(Endpoints.ACCOUNT)
-  public ResponseEntity<UserDto> currentUserAccount() {
-    UserDto account = userQueryService.getAccount();
+  public ResponseEntity<UserDto> currentUserDetails() {
+    UserContext userContext = SecurityUtil.tryToGetUserContext();
+    var userId = userContext.getUserId();
+
+    UserDto account = userQueryService.userDetailsById(userId);
 
     return ResponseEntity.ok(account);
   }

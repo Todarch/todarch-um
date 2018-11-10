@@ -25,13 +25,13 @@ public class UserQueryService {
   /**
    * Returns details of a user account.
    */
-  public UserDto getAccount() {
-    UserContext userContext = SecurityUtil.tryToGetUserContext();
-    String email = userContext.getEmail();
-    User user = userRepository.findByEmail(Email.from(email))
-        .orElseThrow(() -> new RuntimeException("User not found: " + email));
+  public UserDto userDetailsById(Long userId) {
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new RuntimeException("User not found by id: " + userId));
+
     UserDto userDto = new UserDto();
     userDto.setEmail(user.email().value());
+
     return userDto;
   }
 }
