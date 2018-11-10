@@ -26,7 +26,7 @@
     <postgresql.version>42.2.4</postgresql.version>
     <todarch.common.version>1.0-SNAPSHOT</todarch.common.version>
 
-    <!--<scc.http.baseClass>should.be.overridden.by.project</scc.http.baseClass>-->
+    <scc.http.baseClass>com.todarch.um.BaseContractTestHttp</scc.http.baseClass>
     <scc.messaging.baseClass>com.todarch.um.BaseContractTestMessaging</scc.messaging.baseClass>
     <!-- override to LOCAL on development -->
     <scc.contracts.mode>REMOTE</scc.contracts.mode>

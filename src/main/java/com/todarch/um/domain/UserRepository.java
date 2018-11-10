@@ -12,6 +12,8 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, Long> {
   Optional<User> findByEmail(Email email);
 
+  Optional<User> findByActivationCode(String activationCode);
+
   /**
    * For manual id generation.
    *
@@ -22,4 +24,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   default UserId nextId() {
     return UserId.from(UUID.randomUUID().toString());
   }
+
+
 }

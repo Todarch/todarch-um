@@ -4,3 +4,5 @@ spring.cloud:
     bindings:
       emailbinding:
         destination: emails
+
+todarch.healtcheck.endpoints.enabled: true

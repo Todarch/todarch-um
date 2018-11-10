@@ -1,6 +1,6 @@
 package com.todarch.um;
 
-import com.todarch.um.application.user.UserService;
+import com.todarch.um.application.user.UserCommandService;
 import com.todarch.um.application.user.model.RegistrationCommand;
 import com.todarch.um.domain.User;
 import com.todarch.um.domain.UserRepository;
@@ -26,7 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 public abstract class BaseContractTestMessaging {
 
   @Autowired
-  private UserService userService;
+  private UserCommandService userCommandService;
 
   @MockBean
   private UserRepository userRepository;
@@ -39,6 +39,6 @@ public abstract class BaseContractTestMessaging {
     var registrationCommand =
         new RegistrationCommand(TestUser.EMAIL, TestUser.RAW_PASSWORD);
 
-    userService.register(registrationCommand);
+    userCommandService.register(registrationCommand);
   }
 }
