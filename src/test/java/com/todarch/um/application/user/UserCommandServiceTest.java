@@ -22,7 +22,7 @@ public class UserCommandServiceTest extends BaseServiceTest {
 
   @Test
   public void shouldNotRegisterSameEmail() {
-    Mockito.doReturn(Optional.of(TestUser.ENTITY))
+    Mockito.doReturn(Optional.of(TestUser.newInstance()))
         .when(userRepository).findByEmail(TestUser.EMAIL);
 
     var cmd =
@@ -34,5 +34,19 @@ public class UserCommandServiceTest extends BaseServiceTest {
       // ignore
     }
 
+  }
+
+  @Test
+  public void shouldThrowExceptionOnInvalidActivationCode() {
+    String invalidActivationCode = "invalidActivationCode";
+    Mockito.doReturn(Optional.empty())
+        .when(userRepository).findByActivationCode(invalidActivationCode);
+
+    try {
+      userCommandService.activateAccount(invalidActivationCode);
+      Assertions.fail("Should fail on invalid activation code");
+    } catch (InvalidActivationCode ex) {
+      // ignore
+    }
   }
 }

@@ -17,6 +17,11 @@ public final class TestUser {
   public static final EncryptedPassword ENCRYPTED_PASSWORD =
       EncryptedPassword.from("12345678");
 
-  public static final User ENTITY = new User(EMAIL, ENCRYPTED_PASSWORD);
+  /**
+   * The entity itself is mutable, cannot have a static final field for multiple tests.
+   */
+  public static User newInstance() {
+    return new User(EMAIL, ENCRYPTED_PASSWORD);
+  }
 
 }

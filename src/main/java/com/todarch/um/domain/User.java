@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.UUID;
 
 @Entity
 @Table(name = "USERS")
@@ -25,14 +26,21 @@ public class User {
   @Column(nullable = false)
   private EncryptedPassword password;
 
+  @Column(name = "activation_code", nullable = true)
+  private String activationCode;
+
   protected User() {
     // for hibernate
   }
 
+  /**
+   * Initializes a user entity with all required information.
+   */
   public User(@NonNull Email email,
               @NonNull EncryptedPassword password) {
     this.email = email;
     this.password = password;
+    this.activationCode = UUID.randomUUID().toString();
   }
 
   public Long id() {
@@ -45,6 +53,18 @@ public class User {
 
   public EncryptedPassword password() {
     return password;
+  }
+
+  public String activationCode() {
+    return activationCode;
+  }
+
+  public void activate() {
+    activationCode = null;
+  }
+
+  public boolean isActivated() {
+    return activationCode == null;
   }
 }
 

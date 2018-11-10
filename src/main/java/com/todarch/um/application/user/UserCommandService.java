@@ -39,14 +39,21 @@ public class UserCommandService {
    */
   public void register(@NonNull RegistrationCommand command) {
     requireUniqueEmail(command.getEmail());
+
     RawPassword userRawPassword = command.getRawPassword();
     EncryptedPassword encryptedPassword = userRawPassword.encryptWith(passwordEncoder);
     User user = new User(command.getEmail(), encryptedPassword);
     userRepository.save(user);
-    UserRegisteredEvent userRegisteredEvent =
-        new UserRegisteredEvent(user.email(), toActivationUrl(UUID.randomUUID().toString()));
-    producerChannels.email().send(MessageBuilder.withPayload(userRegisteredEvent).build());
+
+    onUserRegistered(user);
+
     log.info("Created user with {}", command.getEmail());
+  }
+
+  private void onUserRegistered(User user) {
+    UserRegisteredEvent userRegisteredEvent =
+        new UserRegisteredEvent(user.email(), toActivationUrl(user.activationCode()));
+    producerChannels.email().send(MessageBuilder.withPayload(userRegisteredEvent).build());
   }
 
   private void requireUniqueEmail(Email email) {
@@ -58,6 +65,20 @@ public class UserCommandService {
 
   //TODO:selimssevgi: extract base value to config
   private String toActivationUrl(String activationKey) {
-    return "https://todarch.com/non-secured/verify-email?code=" + activationKey;
+    return "https://todarch.com/non-secured/activate-account?code=" + activationKey;
+  }
+
+  /**
+   * Activates user account if activation code matches.
+   *
+   * @param activationCode activation code sent to user after registration.
+   * @throws InvalidActivationCode if code does not have any match.
+   */
+  public void activateAccount(String activationCode) {
+    User user =
+        userRepository.findByActivationCode(activationCode)
+            .orElseThrow(InvalidActivationCode::new);
+    user.activate();
+    log.info("{} is successfully activated.");
   }
 }

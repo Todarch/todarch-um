@@ -1,6 +1,7 @@
 package com.todarch.um;
 
 import com.todarch.um.application.user.EmailAddressAlreadyInUse;
+import com.todarch.um.application.user.InvalidActivationCode;
 import com.todarch.um.application.user.UserCommandService;
 import com.todarch.um.helper.TestUser;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
@@ -43,6 +44,12 @@ public abstract class BaseContractTestHttp {
     Mockito.doThrow(new EmailAddressAlreadyInUse())
         .when(userCommandService)
         .register(argThat(cmd -> TestUser.REGISTERED_EMAIL.equals(cmd.getEmail())));
+
+    Mockito.doNothing()
+        .when(userCommandService).activateAccount(any());
+
+    Mockito.doThrow(new InvalidActivationCode())
+        .when(userCommandService).activateAccount("invalid-activation-code");
 
     RestAssuredMockMvc.mockMvc(mockMvc);
   }
