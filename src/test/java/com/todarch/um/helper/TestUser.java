@@ -13,6 +13,8 @@ public final class TestUser {
 
   public static final Email EMAIL = Email.from("test@user.com");
   public static final Email REGISTERED_EMAIL = Email.from("registered@user.com");
+  public static final Email INACTIVE_EMAIL = Email.from("inactive@user.com");
+  public static final Email NONEXISTENT_EMAIL = Email.from("nonexistent@user.com");
   public static final RawPassword RAW_PASSWORD = RawPassword.from("12345678");
   public static final EncryptedPassword ENCRYPTED_PASSWORD =
       EncryptedPassword.from("12345678");

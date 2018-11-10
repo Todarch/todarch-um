@@ -12,7 +12,7 @@ public final class Endpoints {
 
   private static final String API = "/api";
   public static final String ACCOUNT = API + "/account";
-  public static final String AUTHENTICATE = API + "/authenticate";
+  public static final String AUTHENTICATED = API + "/authenticated";
   public static final String LOGOUT = API + "/logout";
 
 }

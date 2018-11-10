@@ -48,7 +48,7 @@ public class AuthenticationController {
   /**
    * Returns 204 if user can read this endpoint.
    */
-  @GetMapping(Endpoints.AUTHENTICATE)
+  @GetMapping(Endpoints.AUTHENTICATED)
   public ResponseEntity<Object> isAuthenticated() {
     return ResponseEntity.noContent().build();
   }
