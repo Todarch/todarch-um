@@ -1,9 +1,7 @@
 package com.todarch.um.application.user;
 
-import com.todarch.security.api.SecurityUtil;
-import com.todarch.security.api.UserContext;
+import com.todarch.um.application.exception.ApplicationException;
 import com.todarch.um.application.user.model.RegistrationCommand;
-import com.todarch.um.application.user.model.UserDto;
 import com.todarch.um.domain.User;
 import com.todarch.um.domain.UserRepository;
 import com.todarch.um.domain.kernel.EncryptedPassword;
@@ -24,7 +22,7 @@ import java.util.UUID;
 @Transactional
 @AllArgsConstructor
 @Slf4j
-public class UserServiceImpl implements UserService {
+public class UserCommandService {
 
   private final UserRepository userRepository;
 
@@ -32,8 +30,15 @@ public class UserServiceImpl implements UserService {
 
   private final ProducerChannels producerChannels;
 
-  @Override
+  /**
+   * Registers a new user.
+   * Generates user registration event.
+   *
+   * @param command user registration command.
+   * @throws ApplicationException when email is not unique.
+   */
   public void register(@NonNull RegistrationCommand command) {
+    requireUniqueEmail(command.getEmail());
     RawPassword userRawPassword = command.getRawPassword();
     EncryptedPassword encryptedPassword = userRawPassword.encryptWith(passwordEncoder);
     User user = new User(command.getEmail(), encryptedPassword);
@@ -44,15 +49,11 @@ public class UserServiceImpl implements UserService {
     log.info("Created user with {}", command.getEmail());
   }
 
-  @Override
-  public UserDto getAccount() {
-    UserContext userContext = SecurityUtil.tryToGetUserContext();
-    String email = userContext.getEmail();
-    User user = userRepository.findByEmail(Email.from(email))
-        .orElseThrow(() -> new RuntimeException("User not found: " + email));
-    UserDto userDto = new UserDto();
-    userDto.setEmail(user.email().value());
-    return userDto;
+  private void requireUniqueEmail(Email email) {
+    userRepository.findByEmail(email)
+        .ifPresent(ignore -> {
+          throw new EmailAddressAlreadyInUse();
+        });
   }
 
   //TODO:selimssevgi: extract base value to config

@@ -28,11 +28,11 @@ public class RawPassword implements ValueObject {
    * @throws IllegalArgumentException when value is null, and does not conform length limits.
    */
   public static RawPassword from(String rawPassword) {
-    checkArgument(rawPassword != null, "RawPassword cannot be null.");
+    checkArgument(rawPassword != null, "Password cannot be null.");
     checkArgument(rawPassword.length() >= MIN_LENGTH,
-        "RawPassword cannot be shorter than %s", MIN_LENGTH);
+        "Password cannot be shorter than %s", MIN_LENGTH);
     checkArgument(rawPassword.length() <= MAX_LENGTH,
-        "RawPassword cannot be longer than %s", MAX_LENGTH);
+        "Password cannot be longer than %s", MAX_LENGTH);
 
     return new RawPassword(rawPassword);
   }
