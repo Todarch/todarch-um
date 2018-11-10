@@ -41,6 +41,7 @@ public class User {
     this.email = email;
     this.password = password;
     this.activationCode = UUID.randomUUID().toString();
+    this.id = -1L; //TODO:selimssevgi: setting it like this temporarily not to have NPE
   }
 
   public Long id() {
